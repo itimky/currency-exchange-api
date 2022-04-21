@@ -1,0 +1,46 @@
+{
+  "currencies": [
+    "USD",
+    "EUR",
+    "JPY",
+    "GBP"
+  ],
+  "rates": [
+    {
+      "base": "USD",
+      "quote": "EUR",
+      "rate": "0.90",
+      "date": "2022-04-19"
+    },
+    {
+      "base": "USD",
+      "quote": "EUR",
+      "rate": "0.91",
+      "date": "2022-04-20"
+    },
+    {
+      "base": "USD",
+      "quote": "EUR",
+      "rate": "0.92",
+      "date": "2022-04-21"
+    },
+    {
+      "base": "USD",
+      "quote": "JPY",
+      "rate": "124.76",
+      "date": "2022-04-20"
+    },
+    {
+      "base": "USD",
+      "quote": "JPY",
+      "rate": "127.15",
+      "date": "2022-04-21"
+    },
+    {
+      "base": "JPY",
+      "quote": "GBP",
+      "rate": "0.006",
+      "date": "2022-04-21"
+    }
+  ]
+}

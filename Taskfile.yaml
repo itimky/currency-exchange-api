@@ -1,0 +1,114 @@
+version: '3'
+
+dotenv: ['.env']
+
+env:
+  PYTHONPATH: {sh: "pwd"}
+
+vars:
+  MODULE: github.com/itimky/word-of-wisom
+
+tasks:
+  gen-migrations:
+    cmds:
+      - alembic revision --autogenerate
+
+  migrate:
+    - alembic upgrade head
+
+  initial-data:
+    cmds:
+      - python initial_data.py
+
+
+
+
+#  build:target:
+#    cmds:
+#      - go build -o ./bin/"{{.TARGET}}" ./cmd/{{.TARGET}}
+#    sources:
+#      - ./**/*.go
+#      - go.mod
+#      - go.sum
+#    generates:
+#      - ./bin/{{.TARGET}}
+#  build:client:
+#    desc: "Build client"
+#    cmds:
+#      - task: build:target
+#        vars: { TARGET: client }
+#  build:server:
+#    desc: "Build server"
+#    cmds:
+#      - task: build:target
+#        vars: { TARGET: server }
+#  build:guide:
+#    desc: "Build guide"
+#    cmds:
+#      - task: build:target
+#        vars: { TARGET: guide }
+#  build:
+#    desc: "Build all"
+#    deps: [build:client, build:server, build:guide]
+#
+#  install:dev:
+#    desc: "Install developer tools"
+#    cmds:
+#      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
+#      - go install github.com/tinylib/msgp@v1.1.6
+#      - go install github.com/vektra/mockery/v2@v2.10.2
+#
+#  install:
+#    desc: "Install dependencies"
+#    cmds:
+#      - go mod download
+#
+#  tidy:
+#    desc: "Tidy go modules"
+#    cmds:
+#      - go mod tidy
+#
+#  lint:
+#    desc: "Run linter check"
+#    cmds:
+#      - golangci-lint run
+#
+#  fmt:
+#    desc: "Format source code"
+#    cmds:
+#      - golangci-lint run --disable-all --enable=goimports --fix
+#
+#  generate:
+#    desc: "Generate go:generate files"
+#    cmds:
+#      - go generate ./...
+#
+#  test:coverage:
+#    desc: "Run all tests with coverage"
+#    cmds:
+#      - go test -coverprofile {{.COVER_OUT_TMP}} ./api/... ./internal/... ./pkg/...
+#      - defer: rm {{.COVER_OUT_TMP}}
+#      - cat {{.COVER_OUT_TMP}} | grep -Ev "/mock/|_gen.go|_generated.go" > cover.out
+#      - go tool cover -func cover.out
+#    vars:
+#      COVER_OUT_TMP: cover.out.tmp
+#
+#  test:
+#    desc: "Run all tests"
+#    cmds:
+#      - go test ./...
+#
+#  run:server:
+#    deps: [build:server]
+#    desc: "Run server"
+#    cmds:
+#      - echo $WOW_SERVER
+#      - bin/server
+#
+#  run:
+#    desc: "Run"
+#    cmds:
+#      - docker-compose down
+#      - docker-compose build
+#      - docker-compose up
+
