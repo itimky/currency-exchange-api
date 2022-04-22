@@ -1,5 +1,5 @@
 import datetime
-from typing import Any, List, Generator, Optional
+from typing import Any, AsyncGenerator, List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,7 +10,7 @@ from app.db.session import SessionLocalAsync
 router = APIRouter()
 
 
-async def get_db() -> Generator:
+async def get_db() -> AsyncGenerator:
     try:
         async with SessionLocalAsync() as db:
             yield db
@@ -29,14 +29,18 @@ async def get_currency_pair_rate_history(
     """
     Retrieve currency_pair_rate history.
     """
-    return await crud.currency_pair_rate.get_history(db, base=base, quote=quote, skip=skip, limit=limit)
+    return await crud.currency_pair_rate.get_history(
+        db, base=base, quote=quote, skip=skip, limit=limit
+    )
 
 
-@router.get('/rate/{base}/{quote}', response_model=Optional[schemas.CurrencyPairRate])
-async def get_currency_pair_rate_history(
-        base: str,
-        quote: str,
-        date: datetime.date,
-        db: AsyncSession = Depends(get_db),
+@router.get("/rate/{base}/{quote}", response_model=schemas.CurrencyPairRate)
+async def get_currency_pair_rate(
+    base: str,
+    quote: str,
+    date: datetime.date,
+    db: AsyncSession = Depends(get_db),
 ) -> Any:
-    return await crud.currency_pair_rate.find_rate(db, base=base, quote=quote, date=date)
+    return await crud.currency_pair_rate.find_rate(
+        db, base=base, quote=quote, date=date
+    )

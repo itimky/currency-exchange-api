@@ -1,10 +1,10 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional
 
-from pydantic import AnyHttpUrl, BaseSettings, HttpUrl, PostgresDsn, validator
+from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = 'Currency Exchange API'
+    PROJECT_NAME: str = "Currency Exchange API"
     API_V1_STR: str = "/api/v1"
 
     # SERVER_NAME: str
@@ -38,7 +38,9 @@ class Settings(BaseSettings):
         )
 
     @validator("SYNC_SQLALCHEMY_DATABASE_URI", pre=True)
-    def assemble_sync_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
+    def assemble_sync_db_connection(
+        cls, v: Optional[str], values: Dict[str, Any]
+    ) -> Any:
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
