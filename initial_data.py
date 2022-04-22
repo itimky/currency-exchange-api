@@ -4,10 +4,10 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List, Dict
 
-from sqlalchemy.orm import Session
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
 
-# from app.db.init_db import init_db
-from app.db.session import SessionLocal
+from app.config import settings
 from app.models import Currency, CurrencyPairRate
 
 logging.basicConfig(level=logging.INFO)
@@ -15,9 +15,10 @@ logger = logging.getLogger(__name__)
 
 
 def init() -> None:
-    db = SessionLocal()
+    engine = create_engine(settings.SYNC_SQLALCHEMY_DATABASE_URI, pool_pre_ping=True, echo=True)
+    db = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)()
+
     populate(db)
-    # init_db(db)
 
 
 def populate(db: Session) -> None:
