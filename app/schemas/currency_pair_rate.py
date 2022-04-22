@@ -12,7 +12,6 @@ class CurrencyPairRateGetter(GetterDict):
         return getattr(self._obj, key)
 
 
-# Shared properties
 class CurrencyPairRate(BaseModel):
     base: str
     quote: str
@@ -21,15 +20,4 @@ class CurrencyPairRate(BaseModel):
 
     class Config:
         orm_mode = True
-        # json_encoders = {Decimal: str}
         getter_dict = CurrencyPairRateGetter
-
-
-# Properties to receive on item creation
-class CurrencyPairRateCreate(CurrencyPairRate):
-    pass
-
-
-# Properties to receive on item update
-class CurrencyPairRateUpdate(CurrencyPairRate):
-    pass

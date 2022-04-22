@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, ForeignKey, Integer, Numeric
+from sqlalchemy import Column, Date, ForeignKey, Integer, Numeric, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
@@ -15,3 +15,5 @@ class CurrencyPairRate(Base):
     quote = relationship("Currency", foreign_keys=[quote_id], lazy="joined")
     date = Column(Date, nullable=False)
     rate = Column(Numeric(RATE_PRECISION, RATE_SCALE), nullable=False)
+
+    __table_args__ = (UniqueConstraint('base_id', 'quote_id', 'date', name='ux_currencypairrate_base_id_quote_id_date'),)

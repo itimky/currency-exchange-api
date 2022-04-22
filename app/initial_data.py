@@ -4,6 +4,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Dict, List
 
+import sqlalchemy.exc
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -66,8 +67,11 @@ def populate_rates(
 
 def main() -> None:
     logger.info("Creating initial data")
-    init()
-    logger.info("Initial data created")
+    try:
+        init()
+        logger.info("Initial data created")
+    except sqlalchemy.exc.IntegrityError:
+        logger.info("Initial data already exists")
 
 
 if __name__ == "__main__":

@@ -1,22 +1,19 @@
 from typing import Any, Dict, Optional
 
-from pydantic import BaseSettings, PostgresDsn, validator
+from pydantic import BaseSettings, PostgresDsn, validator, HttpUrl
 
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Currency Exchange API"
     API_V1_STR: str = "/api/v1"
 
-    # SERVER_NAME: str
-    # SERVER_HOST: AnyHttpUrl
+    SENTRY_DSN: Optional[HttpUrl] = None
 
-    # SENTRY_DSN: Optional[HttpUrl] = None
-
-    # @validator("SENTRY_DSN", pre=True)
-    # def sentry_dsn_can_be_blank(cls, v: str) -> Optional[str]:
-    #     if len(v) == 0:
-    #         return None
-    #     return v
+    @validator("SENTRY_DSN", pre=True)
+    def sentry_dsn_can_be_blank(cls, v: str) -> Optional[str]:
+        if len(v) == 0:
+            return None
+        return v
 
     POSTGRES_SERVER: str
     POSTGRES_USER: str
@@ -50,9 +47,6 @@ class Settings(BaseSettings):
             host=values.get("POSTGRES_SERVER"),
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
-
-    # FIRST_SUPERUSER: EmailStr
-    # FIRST_SUPERUSER_PASSWORD: str
 
     class Config:
         case_sensitive = True

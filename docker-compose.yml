@@ -1,5 +1,13 @@
 version: "3.3"
 
+x-app: &app-tpl
+  env_file:
+    - .env
+  build:
+    context: .
+    dockerfile: Dockerfile
+
+
 services:
   db:
     image: postgres:12
@@ -11,19 +19,29 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
-  
-#  backend:
-#    image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
-#    depends_on:
-#      - db
-#    env_file:
-#      - .env
-#    environment:
-#      - SERVER_NAME=${DOMAIN?Variable not set}
-#      - SERVER_HOST=https://${DOMAIN?Variable not set}
-#    build:
-#      context: ./backend
-#      dockerfile: Dockerfile
+
+  migrations:
+    <<: *app-tpl
+    depends_on:
+      - db
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - python app/backend_pre_start.py && alembic upgrade head
+
+  initial_data:
+    <<: *app-tpl
+    depends_on:
+      - migrations
+    entrypoint: [ "/bin/sh","-c" ]
+    command:
+      - alembic upgrade head && python app/initial_data.py
+
+  app:
+    <<: *app-tpl
+    depends_on:
+      - migrations
+    ports:
+      - "8000:8000"
 
 volumes:
   app-db-data:
