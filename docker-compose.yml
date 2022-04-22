@@ -43,6 +43,6 @@ services:
     ports:
       - "8000:8000"
 
-volumes:
-  app-db-data:
+#volumes:
+#  app-db-data:
 

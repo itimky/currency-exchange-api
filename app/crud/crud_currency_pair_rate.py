@@ -9,10 +9,11 @@ from sqlalchemy.sql import cast, func
 from app.crud.base import CRUDBase
 from app.models import Currency
 from app.models.currency_pair_rate import RATE_PRECISION, RATE_SCALE, CurrencyPairRate
+from app.schemas import CurrencyPairRate as CurrencyPairRateSchema
 
 
 class CRUDCurrencyPairRate(
-    CRUDBase[CurrencyPairRate, CurrencyPairRate, CurrencyPairRate]
+    CRUDBase[CurrencyPairRate, CurrencyPairRateSchema, CurrencyPairRateSchema]
 ):
     async def get_history(
         self,

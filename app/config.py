@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 
-from pydantic import BaseSettings, PostgresDsn, validator, HttpUrl
+from pydantic import BaseSettings, HttpUrl, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
